@@ -54,4 +54,9 @@ Route::post('/logout', Api\LogoutController::class)->name('logout');
 Route::get('/news/{token}', 'Api\NewsController@getDataNews')->middleware('jwt.verify');
 
 
+/**
+ * route "/regulation/{token}"
+ * @method "GET"
+ */
+Route::get('/regulasi/{token}', 'Api\NewsController@getDataRegulation')->middleware('jwt.verify');
 

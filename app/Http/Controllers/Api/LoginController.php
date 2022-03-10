@@ -32,7 +32,7 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         //set time
-        $myTTL = 1; //minutes
+        $myTTL = 10; //minutes
         JWTAuth::factory()->setTTL($myTTL);
 
         //if auth failed
@@ -50,7 +50,7 @@ class LoginController extends Controller
             'success' => "success",
             'data'    => array(
                 'user'    => auth()->user(),  
-                'token'   => $token   
+                'token'   => $token
             ),
         ], 200);
     }

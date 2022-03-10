@@ -9,11 +9,11 @@ class DataController extends Controller
 {
     public function index()
     {
-        $apiURL = 'http://127.0.0.1:8000/api/news/';
+        $apiURL = 'http://127.0.0.1:8000/api/news/ODgxMDAwMDAyfE50by9sZCtRRWhEVXZvTUZ3QW1HU2U5ODl3L3pVMTJWdEw4Si9pWmJzU2s9?CommandName=GetList&ModelCode=News&UserName=88102332';
         $postInput = [
-            'CommandName' => 'Hardik',
-            'ModelCode' => 'Savani',
-            'UserName' => 'example@gmail.com'
+            'CommandName' => 'GetList',
+            'ModelCode' => 'News',
+            'UserName' => '88102332'
         ];
         $headers = [
             'Accept' => 'application/json',

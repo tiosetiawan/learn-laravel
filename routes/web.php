@@ -21,5 +21,9 @@ Route::get('/home', function (){
     return view('home');
 });
 
+Route::get('/greeting', function () {
+    return 'Hello World';
+});
+
 Route::resource('blog', BlogController::class);
-Route::resource('Data', DataController::class);
+Route::resource('data', DataController::class);

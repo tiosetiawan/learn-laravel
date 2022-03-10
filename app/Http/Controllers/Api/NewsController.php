@@ -17,34 +17,89 @@ use Illuminate\Support\Facades\DB;
 class NewsController extends Controller
 {
     function getDataNews(Request $request, $accessToken){
-        $data = $request->session()->has('token');
+
+        //get header param
+        $key            = $request->header('ModelCode');
+        $tokenJwt       = $request->header('Authorization');
+        
+        //get params
+        $data           = $request->session()->has('token');
+
+        // cek token session
         if($data){
-            $token = $request->session()->get('token');
+            $token      = $request->session()->get('token');
         }else{
-            $token = 'Tidak ada token dalam session.';
+            $token      = 'Tidak ada token dalam session.';
         }
+
+        // get data DB
         $posts = DB::table('informations')
         ->select(
-            'inf_judul',
-            'inf_deskripsi',
-            'inf_gambar',
-            'inf_tanggal',
-            'inf_jenis',
-            'inf_kategori',
-            'inf_perusahaan',
-            'inf_header_aktif',
-            'inf_status'
+            'inf_judul as title',
+            'inf_deskripsi as description',
+            'inf_gambar as image',
+            'inf_tanggal as created_on',
+            'inf_jenis as jenis',
+            'inf_kategori as kategori',
+            'inf_perusahaan as perusahaan',
+            'inf_header_aktif as header_aktif',
+            'inf_status as status'
             )
         ->whereIn('inf_perusahaan', [0,7])
         ->limit(10)
         ->get();
 
+        // response
         return response([
             'UserName'          => $request->get('UserName'),
             'MessageType'       => "success",
-            'TokenUrl'          =>  $accessToken,
-            'TokenJwt'          =>  $token,
+            'ModelCode'         => $key,
+            'TokenUrl'          => $accessToken,
+            'TokenJwt'          => $tokenJwt,
             'MessageTitle'      => "GetList success",
+            'Message'           => "OK",
+            'AlertMessage'      => true,
+            'Secure'            => false,
+            'Data'              => $posts
+        ], 200);
+    }
+
+    function getDataRegulation(Request $request, $accessToken){
+
+        //get header param
+        $key            = $request->header('ModelCode');
+        $tokenJwt       = $request->header('Authorization');
+        
+        //get params
+        $data           = $request->session()->has('token');
+
+        // cek token session
+        if($data){
+            $token      = $request->session()->get('token');
+        }else{
+            $token      = 'Tidak ada token dalam session.';
+        }
+
+        // get data DB
+        $posts = DB::table('regulations')
+        ->select(
+            'title',
+            'file',
+            'description',
+            'perusahaan',
+            'status',
+            )
+        ->whereIn('perusahaan', [0,7])
+        ->get();
+
+        // response
+        return response([
+            'UserName'          => $request->get('UserName'),
+            'MessageType'       => "success",
+            'ModelCode'         => $key,
+            'TokenUrl'          => $accessToken,
+            'TokenJwt'          => $tokenJwt,
+            'MessageTitle'      => "GetRegulation success",
             'Message'           => "OK",
             'AlertMessage'      => true,
             'Secure'            => false,
