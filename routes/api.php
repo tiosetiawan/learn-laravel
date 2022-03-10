@@ -44,15 +44,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  */
 Route::post('/logout', Api\LogoutController::class)->name('logout');
 
-// Route::get('/news', Api\NewsController::class)->name('news');
-// Route::get('/news', 'api\NewsController@index');
-
 /**
  * route "/news/{token}"
  * @method "GET"
  */
 Route::get('/news/{token}', 'Api\NewsController@getDataNews')->middleware('jwt.verify');
-
 
 /**
  * route "/regulation/{token}"
@@ -60,3 +56,26 @@ Route::get('/news/{token}', 'Api\NewsController@getDataNews')->middleware('jwt.v
  */
 Route::get('/regulasi/{token}', 'Api\NewsController@getDataRegulation')->middleware('jwt.verify');
 
+/**
+ * route "/learning/{token}"
+ * @method "GET"
+ */
+Route::get('/learning/{token}', 'Api\NewsController@getDataLearning')->middleware('jwt.verify');
+
+/**
+ * route "/perusahaan/{token}"
+ * @method "GET"
+ */
+Route::get('/perusahaan/{token}', 'Api\NewsController@getDataPerusahaan')->middleware('jwt.verify');
+
+/**
+ * route "/validate/{token}"
+ * @method "GET"
+ */
+Route::get('/validate/{token}', 'Api\ValidateController@getValidateData')->middleware('jwt.verify');
+
+/**
+ * route "/validate/{token}"
+ * @method "GET"
+ */
+Route::post('/validatetoken/{token}', 'Api\ValidateController@getValidateData')->middleware('token.verify');

@@ -13,24 +13,39 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\DB;
 
-
-class NewsController extends Controller
+class ValidateController extends Controller
 {
-    function getDataNews(Request $request, $accessToken){
-
+    function getValidateData(Request $request, $accessToken){
         //get header param
-        $key            = $request->header('ModelCode');
-        $tokenJwt       = $request->header('Authorization');
-        
+        $key            = $request->get('ModelCode');
+        $Token          = $request->get('Token');
+        $user           = $request->get('ParameterData');
+
         //get params
         $data           = $request->session()->has('token');
 
-        // cek token session
-        if($data){
-            $token      = $request->session()->get('token');
-        }else{
-            $token      = 'Tidak ada token dalam session.';
+        //validate ModelCode
+        if($key == 'News'){
+           return $this->getDataNews($key, $Token, $accessToken,$user);
         }
+        elseif($key == 'Regulation'){
+            return $this->getDataRegulation($key, $Token, $accessToken,$user);
+        }
+        elseif($key == 'Learning'){
+            return $this->getDataLearning($key, $Token, $accessToken,$user);
+        }
+        elseif($key == 'ProfilePerusahaan'){
+            return $this->getDataPerusahaan($key, $Token, $accessToken,$user);
+        }
+        else{
+            return response()->json([
+                'success' => false,
+                'message' => 'ModelCode Tidak Ditemukan'
+            ], 401);
+        }
+    }
+
+    function getDataNews($key, $Token, $accessToken,$user){
 
         // get data DB
         $posts = DB::table('informations')
@@ -51,11 +66,10 @@ class NewsController extends Controller
 
         // response
         return response([
-            'UserName'          => $request->get('UserName'),
+            'UserName'          => $user[0]['Operator'],
             'MessageType'       => "success",
             'ModelCode'         => $key,
-            'TokenUrl'          => $accessToken,
-            'TokenJwt'          => $tokenJwt,
+            'Token'             => $Token,
             'MessageTitle'      => "GetList success",
             'Message'           => "OK",
             'AlertMessage'      => true,
@@ -64,21 +78,7 @@ class NewsController extends Controller
         ], 200);
     }
 
-    function getDataRegulation(Request $request, $accessToken){
-
-        //get header param
-        $key            = $request->header('ModelCode');
-        $tokenJwt       = $request->header('Authorization');
-        
-        //get params
-        $data           = $request->session()->has('token');
-
-        // cek token session
-        if($data){
-            $token      = $request->session()->get('token');
-        }else{
-            $token      = 'Tidak ada token dalam session.';
-        }
+    function getDataRegulation($key, $Token, $accessToken,$user){
 
         // get data DB
         $posts = DB::table('regulations')
@@ -95,11 +95,10 @@ class NewsController extends Controller
 
         // response
         return response([
-            'UserName'          => $request->get('UserName'),
+            'UserName'          => $user,
             'MessageType'       => "success",
             'ModelCode'         => $key,
-            'TokenUrl'          => $accessToken,
-            'TokenJwt'          => $tokenJwt,
+            'Token'             => $Token,
             'MessageTitle'      => "GetRegulation success",
             'Message'           => "OK",
             'AlertMessage'      => true,
@@ -108,21 +107,7 @@ class NewsController extends Controller
         ], 200);
     }
 
-    function getDataLearning(Request $request, $accessToken){
-
-        //get header param
-        $key            = $request->header('ModelCode');
-        $tokenJwt       = $request->header('Authorization');
-        
-        //get params
-        $data           = $request->session()->has('token');
-
-        // cek token session
-        if($data){
-            $token      = $request->session()->get('token');
-        }else{
-            $token      = 'Tidak ada token dalam session.';
-        }
+    function getDataLearning($key, $Token, $accessToken,$user){
 
         // get data DB
         $posts = DB::table('learnings')
@@ -140,11 +125,10 @@ class NewsController extends Controller
 
         // response
         return response([
-            'UserName'          => $request->get('UserName'),
+            'UserName'          => $user,
             'MessageType'       => "success",
             'ModelCode'         => $key,
-            'TokenUrl'          => $accessToken,
-            'TokenJwt'          => $tokenJwt,
+            'Token'             => $Token,
             'MessageTitle'      => "GetLearning success",
             'Message'           => "OK",
             'AlertMessage'      => true,
@@ -153,21 +137,7 @@ class NewsController extends Controller
         ], 200);
     }
 
-    function getDataPerusahaan(Request $request, $accessToken){
-
-        //get header param
-        $key            = $request->header('ModelCode');
-        $tokenJwt       = $request->header('Authorization');
-        
-        //get params
-        $data           = $request->session()->has('token');
-
-        // cek token session
-        if($data){
-            $token      = $request->session()->get('token');
-        }else{
-            $token      = 'Tidak ada token dalam session.';
-        }
+    function getDataPerusahaan($key, $Token, $accessToken,$user){
 
         // get data DB
         $posts = DB::table('profile_perusahaan')
@@ -183,11 +153,10 @@ class NewsController extends Controller
 
         // response
         return response([
-            'UserName'          => $request->get('UserName'),
+            'UserName'          => $user,
             'MessageType'       => "success",
             'ModelCode'         => $key,
-            'TokenUrl'          => $accessToken,
-            'TokenJwt'          => $tokenJwt,
+            'Token'             => $Token,
             'MessageTitle'      => "GetPerusahaan success",
             'Message'           => "OK",
             'AlertMessage'      => true,
@@ -195,5 +164,4 @@ class NewsController extends Controller
             'Data'              => $posts
         ], 200);
     }
-
 }
