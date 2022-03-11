@@ -15,27 +15,28 @@ use Illuminate\Support\Facades\DB;
 
 class ValidateController extends Controller
 {
-    function getValidateData(Request $request, $accessToken){
+    function getValidateData(Request $request){
         //get header param
         $key            = $request->get('ModelCode');
         $Token          = $request->get('Token');
-        $user           = $request->get('ParameterData');
+        $data           = $request->get('ParameterData');
+        $user           = $data[0]['UserName'];
 
         //get params
         $data           = $request->session()->has('token');
 
         //validate ModelCode
         if($key == 'News'){
-           return $this->getDataNews($key, $Token, $accessToken,$user);
+           return $this->getDataNews($key, $Token, $user);
         }
         elseif($key == 'Regulation'){
-            return $this->getDataRegulation($key, $Token, $accessToken,$user);
+            return $this->getDataRegulation($key, $Token, $user);
         }
-        elseif($key == 'Learning'){
-            return $this->getDataLearning($key, $Token, $accessToken,$user);
+        elseif($key == 'eLearning'){
+            return $this->getDataLearning($key, $Token, $user);
         }
-        elseif($key == 'ProfilePerusahaan'){
-            return $this->getDataPerusahaan($key, $Token, $accessToken,$user);
+        elseif($key == 'CompanyProfile'){
+            return $this->getDataPerusahaan($key, $Token, $user);
         }
         else{
             return response()->json([
@@ -45,7 +46,7 @@ class ValidateController extends Controller
         }
     }
 
-    function getDataNews($key, $Token, $accessToken,$user){
+    function getDataNews($key, $Token, $user){
 
         // get data DB
         $posts = DB::table('informations')
@@ -66,7 +67,7 @@ class ValidateController extends Controller
 
         // response
         return response([
-            'UserName'          => $user[0]['Operator'],
+            'UserName'          => $user,
             'MessageType'       => "success",
             'ModelCode'         => $key,
             'Token'             => $Token,
@@ -78,7 +79,7 @@ class ValidateController extends Controller
         ], 200);
     }
 
-    function getDataRegulation($key, $Token, $accessToken,$user){
+    function getDataRegulation($key, $Token, $user){
 
         // get data DB
         $posts = DB::table('regulations')
@@ -107,7 +108,7 @@ class ValidateController extends Controller
         ], 200);
     }
 
-    function getDataLearning($key, $Token, $accessToken,$user){
+    function getDataLearning($key, $Token, $user){
 
         // get data DB
         $posts = DB::table('learnings')
@@ -137,7 +138,7 @@ class ValidateController extends Controller
         ], 200);
     }
 
-    function getDataPerusahaan($key, $Token, $accessToken,$user){
+    function getDataPerusahaan($key, $Token, $user){
 
         // get data DB
         $posts = DB::table('profile_perusahaan')

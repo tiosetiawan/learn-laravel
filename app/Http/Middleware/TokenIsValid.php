@@ -17,8 +17,11 @@ class TokenIsValid
      */
     public function handle(Request $request, Closure $next)
     {
-        $username   = $request->header('UserName');
-        $token      = $request->header('token');
+        $token          = $request->get('Token');
+        $username       = $request->get('UserName');
+        $data           = $request->get('ParameterData');
+
+        $statik_token   = config('app.token_imipinfo');
 
         //cek data in database
         $posts = DB::table('tokens')
@@ -27,11 +30,11 @@ class TokenIsValid
         ->where('access_name', $username)
         ->first();
         
-        if($posts){
-            if ($request->header('token') != $posts->access_token) {
+        if($statik_token){
+            if ($request->get('Token') != $statik_token) {
                 return response()->json(['status' => 'Token is Invalid']);
             }else{
-                $request->session()->put('token', $posts->access_token);
+                $request->session()->put('token', $statik_token);
             }
         }else{
             return response()->json(['status' => 'Authorization Token not found']);

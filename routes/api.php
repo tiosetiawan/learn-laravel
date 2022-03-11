@@ -78,4 +78,9 @@ Route::get('/validate/{token}', 'Api\ValidateController@getValidateData')->middl
  * route "/validate/{token}"
  * @method "GET"
  */
-Route::post('/validatetoken/{token}', 'Api\ValidateController@getValidateData')->middleware('token.verify');
+// Route::post('/validatetoken/{token}', 'Api\ValidateController@getValidateData')->middleware('token.verify');
+
+
+Route::group(['middleware' => ['token.verify']], function () {
+        Route::post('/news', 'Api\ValidateController@getValidateData');
+});

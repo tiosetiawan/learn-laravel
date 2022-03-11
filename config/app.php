@@ -14,7 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    'token_imipinfo' => env('TOKEN_IMIP_SUPPER_APPS', "ODgxMDAwMDAyfE50by9sZCtRRWhEVXZvTUZ3QW1HU2U5ODl3L3pVMTJWdEw4Si9pWmJzU2s9"),
     /*
     |--------------------------------------------------------------------------
     | Application Environment

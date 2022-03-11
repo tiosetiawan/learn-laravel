@@ -29,7 +29,7 @@
                               @forelse ($blogs as $blog)
                                 <tr>
                                     <td class="text-center">
-                                        <img src="{{ Storage::url('public/blogs/').$blog->image }}" class="rounded" style="width: 150px">
+                                        <img src="{{ url('storage/blogs/'.$blog->image) }}" class="rounded" style="width: 150px">
                                     </td>
                                     <td>{{ $blog->title }}</td>
                                     <td>{!! $blog->content !!}</td>
